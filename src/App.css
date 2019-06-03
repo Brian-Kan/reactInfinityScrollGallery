@@ -36,7 +36,42 @@
 /* CUSTOM  STYLINGS */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+/* ================================================================ */
+/* HEADER  STYLINGS */
+/* ================================================================ */
+/* header { 
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}  */
 
+ header::after {
+  background-image: 
+    linear-gradient( rgba(0,0,0,.8), rgba(0,0,0,.8) ),
+    url(./assets/Disneyland-Paris_1.jpg)
+  ;
+  
+  opacity: .9;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  content: "";
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+/* .titleButtonContainer {
+  color: #ffdd59;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  flex-direction: column;
+} */
 
 /* ================================================================ */
 /* GALLERY  STYLINGS */

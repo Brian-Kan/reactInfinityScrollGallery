@@ -83,7 +83,7 @@ class App extends Component {
         <header>
 
           <div className="titleButtonContainer">
-            <h1>Generate a random gallery.</h1>
+            <h1>Generate a random gallery.<br></br>Scroll to the bottom to get more images or just hit the button!</h1>
 
             <button onClick={this.getPhotos}>Click me for pictures!</button>
 
