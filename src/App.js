@@ -9,65 +9,89 @@ class App extends Component {
     // Default/initial state for our application
     this.state = {
       images: [],
-      imageGroup1: [],
-      imageGroup2: [],
-      imageGroup3: [],
-      imageGroup4: [],
-      imageGroup5: [],
+      visibleImages: [],
+ 
       isLoading: true
     }
   }
 
-componentDidMount(){
-  
-}
 
-getPhotos = () => {
-  axios( {
-    method:'GET',
-    url: 'https://pixabay.com/api/',
-    dataResponse: 'jsonp',
-    params: {
-      key: '12624950-1e2c848ae9138ca54d5e56079'
+    // function to do something (on scroll) when scrolled to the right point, get more images and update the state
+  componentDidMount(){
+    // code to register an event listener  (ex document.addEventListener like scroll and pass a functino to run when sroll happens)
+    document.addEventListener('scroll',  (event) => {
+      
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        // you're at the bottom of the page
+        console.log("Scroll Test!");
+        this.imageRendering()
       }
-    })
-    .then((result) => {
-      // const images = result;
-      const imageGroup1 = result.data.hits.slice(0, 4);
-      const imageGroup2 = result.data.hits.slice(4, 8);
-      const imageGroup3 = result.data.hits.slice(8, 12);
-      const imageGroup4 = result.data.hits.slice(12, 16);
-      const imageGroup5 = result.data.hits.slice(16);
       
-      this.setState({
-        images: result.data.hits,
-        imageGroup1: imageGroup1,
-        imageGroup2: imageGroup2,
-        imageGroup3: imageGroup3,
-        imageGroup4: imageGroup4,
-        imageGroup5: imageGroup5,
-        isLoading: false      
-      });
-      
-      
-  }).catch((err) => {
-      console.log("The axios call failed", err)
-  });
-}
+  
+    }, true /*Capture event*/);
+  
+    }
 
-  componentDidUpdate(){
-    /*This is most likely used for the infinite scroll*/
+
+  getPhotos = () => {
+    axios( {
+      method:'GET',
+      url: 'https://pixabay.com/api/',
+      dataResponse: 'jsonp',
+      params: {
+        key: '12624950-1e2c848ae9138ca54d5e56079',
+        per_page: 200
+        }
+      })
+      .then((result) => {
+
+        
+        this.setState({
+          images: result.data.hits,
+          isLoading: false      
+        });
+        this.imageRendering();
+        console.log("Visible Images", this.state.visibleImages)
+        
+    }).catch((err) => {
+        console.log("The axios call failed", err)
+    });
   }
 
+
+  imageRendering = () => {
+    const imagesClone = this.state.images;
+    const renImagesClone = this.state.visibleImages;
+    
+    for (let i = 0; i < 20; i++) {
+
+      renImagesClone.push(imagesClone[0])
+      imagesClone.shift()
+    }
+    this.setState({
+      images: imagesClone,
+      visibleImages: renImagesClone
+    })
+
+  }
+  
+
   render(){
-    console.log("this.state", this.state);
+    
     return (
       <div className="App">
         <header>
-          
-          <h1>Random gallery generator. <br></br>Generate a random gallery.</h1>
 
-          <button onClick={this.getPhotos}>Click me for pictures!</button>
+          <div className="titleButtonContainer">
+            <h1>Generate a random gallery.</h1>
+
+            <button onClick={this.getPhotos}>Click me for pictures!</button>
+
+            <button onClick={this.imageRendering}>Get MORE pictures!</button>
+
+            <div onScroll={this.imageRendering}></div>  
+          </div>
+          
           
         </header>
         <section className="gallery">
@@ -80,25 +104,23 @@ getPhotos = () => {
           * put the https link for the images in your <img> src
           */}
           
-
-
-          { this.state.images.map( image => {
-            return (
-              <div className="imageSizer" key={image.largeImageURL}>
-                { image.largeImageURL ? <img src={image.largeImageURL} alt={image.tags}/> : null}
-              </div>
-            )
+          { this.state.visibleImages.map( image => {
+            if (image !== undefined){   
+              return (
+                <div className="imageSizer" key={image === undefined ? console.log("Null Message") : image.largeImageURL}>
+                  { image.largeImageURL ? <img src={image.largeImageURL} alt={image.tags}/> : null }
+                </div>
+              )
+            }
           })}
-
-
-          
+        
 
         </section>
       </div>
     );
   }
 
-  }
+}
 
 export default App;
 
