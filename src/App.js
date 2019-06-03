@@ -47,8 +47,7 @@ class App extends Component {
 
         
         this.setState({
-          images: result.data.hits,
-          isLoading: false      
+          images: result.data.hits  
         });
         this.imageRendering();
         console.log("Visible Images", this.state.visibleImages)
@@ -123,26 +122,3 @@ class App extends Component {
 }
 
 export default App;
-
-// const imageMap = this.state.images.map( (image => image);
-
-// const imageSlice1 = imageMap.slice(0, 4);
-// const imageSlice2 = 
-
-
-
-
-// { this.state.isLoading ? <p>Loading....👾</p> : this.state.images.map( (image) => {
-//   return (
-//     <section className="wrapper" key={image.largeImageURL}>
-//       <div className="imageSet">
-
-//         <div className="imageSizer">
-//           <img src={image.largeImageURL}  alt={image.tags}/>
-//         </div>
-
-//       </div>
-//     </section>
-//     )
-//   })
-// }
